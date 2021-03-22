@@ -5,6 +5,7 @@ import store from "./store";
 import axios from "axios";
 import ElementUI from "element-ui";
 import { Message } from "element-ui";
+import { MessageBox } from "element-ui";
 
 import "element-ui/lib/theme-chalk/index.css";
 //导入全局样式
@@ -21,8 +22,15 @@ import "./assets/fonts/iconfont.css";
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 axios.defaults.baseURL = "http://127.0.0.1:8888/api/private/v1/";
+// 请求拦截器
+axios.interceptors.request.use((config) => {
+  // console.log(config);
+  config.headers.Authorization = window.sessionStorage.getItem("token");
+  return config;
+});
 Vue.prototype.$http = axios;
 Vue.prototype.$message = Message;
+Vue.prototype.$confirm = MessageBox.confirm;
 new Vue({
   router,
   store,
